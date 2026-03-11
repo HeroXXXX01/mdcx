@@ -30,23 +30,12 @@ jobs:
               id: set-matrix
               run: |
                   items=()
-
-                  # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners
-
-                  items+=('{"build": "macos", "os": "macos-latest", "arch": "aarch64"}')
-                  items+=('{"build": "macos", "os": "macos-13", "arch": "x86_64"}')
-
+                  # 仅保留 Windows 构建
                   items+=('{"build": "windows", "os": "windows-latest", "arch": "x86_64"}')
-
-                  # macOS 10.15.7, x86_64, 指定opencv版本
-                  if [[ -n "${{ vars.BUILD_FOR_MACOS_LEGACY }}" && -n "${{ vars.MACOS_LEGACY_CV_VERSION }}" ]]; then
-                    items+=('{"build": "macos", "os": "macos-13", "arch": "x86_64", "cv": "${{ vars.MACOS_LEGACY_CV_VERSION }}", "tail": "-legacy"}')
-                  fi
-
-                  # win7, x86_64, python3.8
-                  if [[ -n "${{ vars.BUILD_FOR_WINDOWS_LEGACY }}" ]]; then
-                    items+=('{"build": "windows", "os": "windows-2019", "arch": "x86_64", "python": "3.8", "tail": "-legacy"}')
-                  fi
+                  # 如果需要支持 Windows 7 旧版构建，取消下面两行的注释（并设置变量）
+                  # if [[ -n "${{ vars.BUILD_FOR_WINDOWS_LEGACY }}" ]]; then
+                  #   items+=('{"build": "windows", "os": "windows-2019", "arch": "x86_64", "python": "3.8", "tail": "-legacy"}')
+                  # fi
 
                   # 合并items到json数组
                   matrix="matrix=["
@@ -115,7 +104,7 @@ jobs:
 
             - name: Build Windows app - Windows
               if: ${{ matrix.build == 'windows' }}
-              run: scripts/build-action
+              run: bash scripts/build-action
 
             - name: Build macOS app - macOS
               if: ${{ matrix.build == 'macos' }}
