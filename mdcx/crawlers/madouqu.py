@@ -42,6 +42,7 @@ def get_detail_info(html, number, file_path):
     studio = html.xpath('string(//span[@class="meta-category"])').strip()
     cover_url = html.xpath('//div[@class="entry-content u-text-format u-clearfix"]/p/img/@src')
     cover_url = cover_url[0] if cover_url else ""
+    cover_url = cover_url.replace("md.hm1225.cyou", "madouqu.shop")
     actor = get_extra_info(title, file_path, info_type="actor") if actor == "" else actor
     # 处理发行时间，年份
     try:
