@@ -104,7 +104,7 @@ jobs:
 
             - name: Build Windows app - Windows
               if: ${{ matrix.build == 'windows' }}
-              run: bash scripts/build-action
+              run: python scripts/build.py
 
             - name: Build macOS app - macOS
               if: ${{ matrix.build == 'macos' }}
